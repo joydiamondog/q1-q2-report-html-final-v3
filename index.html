@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026Q1总结与Q2规划</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --paper: #ffffff;
+      --paper-soft: #f5f5f7;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: #e5e5e7;
+      --accent: #d51f26;
+      --accent-dark: #9f151b;
+      --accent-soft: #f8f4f4;
+      --gold: #9f8357;
+      --shadow: 0 18px 44px rgba(29, 29, 31, 0.06);
+      --nav-w: 230px;
+      --content-w: min(1180px, calc(100vw - 340px));
+      --radius: 30px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,0,0,0.025), transparent 28%),
+        linear-gradient(180deg, #fbfbfd 0%, #ffffff 100%);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+    }
+
+    .hotzone {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80px;
+      height: 80px;
+      z-index: 1200;
+      cursor: pointer;
+    }
+
+    .edit-toggle, .export-btn {
+      position: fixed;
+      top: 18px;
+      z-index: 1201;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+      cursor: pointer;
+    }
+
+    .edit-toggle { left: 18px; color: var(--accent); border-color: rgba(213,31,38,0.14); }
+    .export-btn { left: 160px; color: #1b1b1f; }
+
+    .edit-banner {
+      position: fixed;
+      top: 18px;
+      left: 312px;
+      z-index: 1201;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      color: #fff;
+      background: rgba(213,31,38,0.96);
+      box-shadow: 0 16px 36px rgba(213,31,38,0.18);
+      display: none;
+    }
+
+    body.edit-mode .edit-banner { display: block; }
+    body.edit-mode [data-editable="true"] {
+      outline: 2px dashed rgba(213,31,38,0.35);
+      outline-offset: 4px;
+      background: rgba(255,241,241,0.8);
+      border-radius: 8px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: var(--nav-w) 1fr;
+      gap: 28px;
+      padding: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      height: calc(100vh - 48px);
+      overflow: auto;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(213,31,38,0.10);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 24px 18px;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(213,31,38,0.10);
+      transform: translateX(2px);
+    }
+
+    .main { min-width: 0; }
+
+    .hero {
+      width: var(--content-w);
+      margin: 0 auto 34px;
+      border-radius: 38px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98), rgba(245,245,247,0.98));
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
+      padding: 56px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,0,0,0.05), transparent 70%);
+    }
+
+    .hero .mini {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h2 {
+      margin: 0 0 18px;
+      font-size: clamp(38px, 4vw, 64px);
+      line-height: 1.06;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      max-width: 11ch;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page {
+      width: var(--content-w);
+      margin: 0 auto 30px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
+      padding: 42px 44px 46px;
+      position: relative;
+      scroll-margin-top: 28px;
+    }
+
+    .page-number {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(213,31,38,0.10);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kicker {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .topic {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+      padding-left: 14px;
+      border-left: 3px solid rgba(0,0,0,0.10);
+      max-width: 62ch;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--accent-dark);
+    }
+
+    p, li, td, th, span {
+      font-size: 15px;
+      line-height: 1.82;
+    }
+
+    ul, ol { margin: 10px 0 0; padding-left: 22px; }
+    li + li { margin-top: 6px; }
+
+    .quote {
+      margin-top: 18px;
+      padding: 20px 22px;
+      border-left: 3px solid rgba(0,0,0,0.14);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fbfbfc, #ffffff);
+      color: #3a3a3c;
+    }
+
+    .quote ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .quote li + li {
+      margin-top: 10px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat-card {
+      border-radius: 22px;
+      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #fff, #fbfbfc);
+      padding: 22px;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .stat-card .num {
+      font-size: 34px;
+      line-height: 1;
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .stat-card .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .panel {
+      border-radius: 24px;
+      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #fff, #fbfbfc);
+      padding: 26px;
+    }
+
+    .panel .panel-title {
+      margin: 0 0 12px;
+      color: var(--accent-dark);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .ring {
+      width: 170px;
+      height: 170px;
+      margin: 12px auto 18px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0 70%, #f1e4e4 70% 100%);
+      display: grid;
+      place-items: center;
+    }
+
+    .ring::after {
+      content: "";
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(213,31,38,0.08);
+    }
+
+    .ring-center {
+      position: relative;
+      z-index: 1;
+      margin-top: -122px;
+      text-align: center;
+      padding-bottom: 18px;
+    }
+
+    .ring-center .big {
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 900;
+      color: var(--accent);
+      display: inline-block;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.92);
+    }
+
+    .ring-note {
+      margin: 2px 0 16px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .mini-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .mini-box {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      min-height: 88px;
+    }
+
+    .mini-box strong {
+      display: block;
+      color: var(--accent-dark);
+      font-size: 20px;
+      margin-top: 4px;
+    }
+
+    .mini-box span { color: var(--muted); font-size: 12px; }
+
+    .table-wrap {
+      margin-top: 18px;
+      overflow: auto;
+      border-radius: 24px;
+      border: 1px solid rgba(213,31,38,0.10);
+      background: linear-gradient(180deg, #fff, #fffdfd);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      padding: 16px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: #fffafa;
+      color: #7b4b4d;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+      background: rgba(213,31,38,0.02);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .badge-strong {
+      color: #8e1e23;
+      background: #fff1f1;
+      border-color: rgba(213,31,38,0.14);
+    }
+
+    .badge-warn {
+      color: #8a5a18;
+      background: #fff7e8;
+      border-color: rgba(185,138,61,0.18);
+    }
+
+    .badge-neutral {
+      color: #6a5860;
+      background: #faf6f7;
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    .timeline-wrap {
+      margin-top: 22px;
+      padding-top: 24px;
+      position: relative;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 42px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(185,138,61,0.25), rgba(213,31,38,0.72), rgba(185,138,61,0.25));
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-node {
+      padding-top: 26px;
+      position: relative;
+    }
+
+    .timeline-node::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 14px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 2px rgba(185,138,61,0.20);
+    }
+
+    .timeline-card {
+      min-height: 182px;
+      border-radius: 20px;
+      border: 1px solid rgba(213,31,38,0.10);
+      background: linear-gradient(180deg, #fff, #fff9f8);
+      box-shadow: 0 12px 22px rgba(0,0,0,0.04);
+      padding: 14px;
+    }
+
+    .timeline-card .date {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .logic-card {
+      border-radius: 24px;
+      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #fff, #fbfbfc);
+      padding: 24px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logic-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, rgba(159,131,87,0.75), rgba(213,31,38,0.55));
+    }
+
+    .logic-card .tag {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .logic-card h4 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.1;
+      color: var(--accent-dark);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .tool-card {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(213,31,38,0.10);
+      background: #fff;
+      box-shadow: 0 16px 28px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .tool-card .head {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid rgba(213,31,38,0.08);
+      background: linear-gradient(180deg, #fff9f9, #ffffff);
+    }
+
+    .tool-card .head strong {
+      display: block;
+      color: var(--accent-dark);
+      font-size: 15px;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .tool-card .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tool-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    .chapter-slab {
+      min-height: 220px;
+      display: flex;
+      align-items: flex-end;
+      padding: 34px;
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,244,244,0.96));
+      border: 1px solid rgba(213,31,38,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-slab::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(213,31,38,0.12), transparent 68%);
+    }
+
+    .chapter-slab h3 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 54px);
+      color: var(--accent-dark);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chapter-slab p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-ribbon {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .summary-ribbon span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f7f7f8;
+      color: #3a3a3c;
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .matrix-card {
+      border-radius: 22px;
+      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #fff, #fbfbfc);
+      padding: 24px;
+      min-height: 100%;
+    }
+
+    .matrix-card .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .matrix-card .head strong {
+      color: var(--accent-dark);
+      font-size: 16px;
+    }
+
+    .state {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f7f7f8;
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #3a3a3c;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .stack-card {
+      border-radius: 24px;
+      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #fff, #fbfbfc);
+      padding: 26px;
+    }
+
+    .stack-card h3 { margin-top: 0; }
+
+    .qa {
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      border: 1px solid rgba(213,31,38,0.12);
+      background: linear-gradient(135deg, #ffffff, #fff3f3);
+      box-shadow: var(--shadow);
+    }
+
+    .qa h2 {
+      margin: 0;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-note {
+      width: var(--content-w);
+      margin: 0 auto 24px;
+      padding: 8px 4px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      :root { --content-w: min(100%, calc(100vw - 48px)); }
+      .dashboard, .two-col, .logic-grid, .tool-grid, .matrix, .stats-grid, .timeline-grid { grid-template-columns: 1fr; }
+      .timeline-line { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .shell { padding: 14px; gap: 16px; }
+      .hero, .page { padding: 24px 20px 24px; border-radius: 24px; }
+      .page-number { position: static; display: inline-block; margin-bottom: 14px; }
+      .edit-banner { left: 18px; right: 18px; top: 64px; }
+      .export-btn { top: 58px; left: 18px; }
+      .edit-toggle { left: 18px; }
+      .timeline-line { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hotzone" aria-label="切换编辑模式" style="display:none;"></div>
+  <button class="edit-toggle" type="button" style="display:none;">编辑模式：关闭</button>
+  <button class="export-btn" type="button" style="display:none;">导出当前 HTML</button>
+  <div class="edit-banner" style="display:none;">编辑模式已开启：按 E 切换，Ctrl+S 显示本地保存提示。</div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">Quarterly Report</div>
+        <h1 data-editable="true">2026Q1 总结与 Q2 规划</h1>
+        <p data-editable="true">围绕 Q1 结果回顾、重点突破、问题复盘与 Q2 重点动作展开汇报。</p>
+      </div>
+      <nav class="nav">
+        <a href="#p1">01 封面</a>
+        <a href="#p2">02 目录</a>
+        <a href="#p3">03 Q1概览</a>
+        <a href="#p4">04 Q1业绩概览</a>
+        <a href="#p5">05 Q1不足与反思</a>
+        <a href="#p6">06 老铺黄金案例</a>
+        <a href="#p7">07 工具赋能</a>
+        <a href="#p8">08 Q1核心结论</a>
+        <a href="#p9">09 第二部分开篇</a>
+        <a href="#p10">10 Q2规划</a>
+        <a href="#p11">11 Q2大客户经营</a>
+        <a href="#p12">12 重点项目拆解</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <div class="mini" data-editable="true">2026 · Quarterly Review</div>
+        <h2 data-editable="true">2026 年 Q1 总结与 Q2 规划</h2>
+        <p data-editable="true">围绕 Q1 结果回顾、重点突破、问题复盘与 Q2 重点动作展开汇报。</p>
+      </section>
+
+      <section class="page" id="p1">
+        <div class="page-number">P.01</div>
+        <div class="kicker" data-editable="true">Cover</div>
+        <h2 class="title" data-editable="true">2026 年 Q1 总结和 Q2 规划</h2>
+        <p class="topic" data-editable="true">页面主题：2026 年 Q1 总结和 Q2 规划</p>
+        <div class="quote" data-editable="true">汇报人：谢佳晏 · 上海 KA</div>
+      </section>
+
+      <section class="page" id="p2">
+        <div class="page-number">P.02</div>
+        <div class="kicker" data-editable="true">Contents</div>
+        <h2 class="title" data-editable="true">目录</h2>
+        <div class="two-col">
+          <div class="stack-card">
+            <h3 data-editable="true">第一部分：Q1 回顾</h3>
+            <p data-editable="true">聚焦 Q1 结果回顾、代表案例和 AI 工具推荐。</p>
+          </div>
+          <div class="stack-card">
+            <h3 data-editable="true">第二部分：Q2 规划</h3>
+            <p data-editable="true">聚焦 Q2 目标、经营逻辑、大客户经营与重点项目推进。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p3">
+        <div class="page-number">P.03</div>
+        <div class="chapter-slab">
+          <div>
+            <div class="kicker" data-editable="true">Part I</div>
+            <h3 data-editable="true">Q1 概览</h3>
+            <p data-editable="true">这一部分先回看 Q1 的结果与压力，再通过案例与工具，说明当前的打法和方法沉淀。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p4">
+        <div class="page-number">P.04</div>
+        <div class="kicker" data-editable="true">Performance Dashboard</div>
+        <h2 class="title" data-editable="true">2026 年 Q1 业绩概览</h2>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label" data-editable="true">新增业绩</div><div class="num" data-editable="true">16.5</div><div class="sub" data-editable="true">万元</div></div>
+          <div class="stat-card"><div class="label" data-editable="true">续费业绩</div><div class="num" data-editable="true">1.1</div><div class="sub" data-editable="true">万元</div></div>
+          <div class="stat-card"><div class="label" data-editable="true">Q1 指标</div><div class="num" data-editable="true">70</div><div class="sub" data-editable="true">万元</div></div>
+          <div class="stat-card"><div class="label" data-editable="true">Q2 铁冲</div><div class="num" data-editable="true">108+</div><div class="sub" data-editable="true">万元</div></div>
+        </div>
+        <div class="dashboard">
+          <div class="panel">
+            <div class="panel-title" data-editable="true">核心判断</div>
+            <p data-editable="true">Q1 结果未达预期，但 Q2 已形成较明确储备，后续关键在重点项目签约率提升与回款节奏前置。</p>
+            <div class="summary-ribbon">
+              <span data-editable="true">Q1 结果未达预期</span>
+              <span data-editable="true">Q2 已形成较明确储备</span>
+              <span data-editable="true">关键在签约率提升与回款前置</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title" data-editable="true">H1 完成度预估</div>
+            <div class="ring"></div>
+            <div class="ring-center">
+              <div class="big" data-editable="true">70%+</div>
+            </div>
+            <div class="ring-note" data-editable="true">Q1 回款 + Q2 铁冲 / H1 指标</div>
+            <div class="mini-metrics">
+              <div class="mini-box"><span data-editable="true">H1 指标总和</span><strong data-editable="true">166 万</strong></div>
+              <div class="mini-box"><span data-editable="true">Q1 回款 + Q2 铁冲</span><strong data-editable="true">124 万</strong></div>
+            </div>
+          </div>
+        </div>
+        <h3 data-editable="true">重点项目储备与推进状态</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-editable="true">客户 / 项目</th>
+                <th data-editable="true">预估金额</th>
+                <th data-editable="true">类型</th>
+                <th data-editable="true">判断</th>
+                <th data-editable="true">阶段 / 风险</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td data-editable="true">爱马仕 + 客服私有化</td><td data-editable="true">40+ 万</td><td><span class="badge badge-neutral" data-editable="true">新签</span></td><td><span class="badge badge-strong" data-editable="true">铁单</span></td><td><span class="badge badge-neutral" data-editable="true">交付阶段</span></td></tr>
+              <tr><td data-editable="true">某奢品增购</td><td data-editable="true">20+ 万</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-strong" data-editable="true">铁单</span></td><td><span class="badge badge-neutral" data-editable="true">推进中</span></td></tr>
+              <tr><td data-editable="true">老铺黄金</td><td data-editable="true">30+ 万</td><td><span class="badge badge-neutral" data-editable="true">新签</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-warn" data-editable="true">重点推进</span></td></tr>
+              <tr><td data-editable="true">捷成 ITSSC</td><td data-editable="true">10+ 万</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-neutral" data-editable="true">推进中</span></td></tr>
+              <tr><td data-editable="true">a2 Agent</td><td data-editable="true">8+ 万</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-warn" data-editable="true">延期风险</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="page" id="p5">
+        <div class="page-number">P.05</div>
+        <div class="kicker" data-editable="true">Business Review</div>
+        <h2 class="title" data-editable="true">Q1 暴露出的关键问题</h2>
+        <p class="topic" data-editable="true">这一页聚焦 Q1 在经营判断和项目推进中暴露出的几个问题，作为后续需要重点补强的方向。</p>
+        <div class="logic-grid">
+          <div class="logic-card"><div class="tag" data-editable="true">01</div><h4 data-editable="true">部分项目付款节奏判断偏乐观</h4><p data-editable="true">以爱马仕为代表，客户内部架构审核和私有化相关流程拉长了付款周期，部分原计划在 Q1 回款的金额延后到了 Q2。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">02</div><h4 data-editable="true">私有化项目推进复杂度更高</h4><p data-editable="true">私有化项目不仅交付周期更长，信息安全审核、流程审批和收款推进的复杂度也明显更高。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">03</div><h4 data-editable="true">重点机会前置储备仍需加强</h4><p data-editable="true">Q1 部分重点商机进入时点偏后，例如鄂尔多斯等；后续需要更多在客户立项和需求形成阶段更早介入，积累可复制机会。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">04</div><h4 data-editable="true">Agent 类项目打法储备仍需加强</h4><p data-editable="true">目前很多项目仍以在线呼叫、Agent 智能辅助为主；后续更值得投入的是 ToC 大模型 Agent 和企业内部 Agent 相关方案与打法。</p></div>
+        </div>
+      </section>
+
+      <section class="page" id="p6">
+        <div class="page-number">P.06</div>
+        <div class="kicker" data-editable="true">Case Study</div>
+        <h2 class="title" data-editable="true">老铺黄金案例分享</h2>
+        <p class="topic" data-editable="true">这一页不只回顾项目过程，更重点说明：老铺黄金为什么能赢、这个案例说明了什么，以及后续有哪些可复制打法。</p>
+        <h3 data-editable="true">一、项目时间轴</h3>
+        <div class="timeline-wrap">
+          <div class="timeline-line"></div>
+          <div class="timeline-grid">
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">2025.12 - 2026.01</div><p data-editable="true">通过伙伴推荐完成高层建联和需求调研，快速建立认知对齐，并明确总部门店协同、工单和 400 热线等核心场景。</p></div></div>
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">2026.01 下旬</div><p data-editable="true">完成首轮方案沟通与报价，进入客户首轮供应商筛选。</p></div></div>
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">春节前后</div><p data-editable="true">进入方案细化和选型竞争阶段，客户对多个供应商进行多轮评估。</p></div></div>
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">2026.02 - 03 上旬</div><p data-editable="true">根据客户反馈持续优化方案和报价，并逐步明确一期、二期、三期规划。</p></div></div>
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">2026.03 中旬</div><p data-editable="true">成功中标，一期合同金额约 38 万元，合同与保密协议进入法务审核。</p></div></div>
+            <div class="timeline-node"><div class="timeline-card"><div class="date" data-editable="true">2026.03.27 → 06.30</div><p data-editable="true">项目正式启动，召开实施启动会，进入实施阶段，计划于 2026 年 6 月 30 日完成一期上线。</p></div></div>
+          </div>
+        </div>
+        <h3 data-editable="true">二、为什么能赢</h3>
+        <div class="logic-grid">
+          <div class="logic-card"><div class="tag" data-editable="true">01</div><h4 data-editable="true">前置介入 + 高层建联</h4><p data-editable="true">在客户需求尚未完全成型时提前介入，并通过高层建联更早进入核心决策链。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">02</div><h4 data-editable="true">伙伴支持 + 资源协同</h4><p data-editable="true">在项目推进过程中获得伙伴帮助，帮助我方更快建立信任并推动关键节点前进。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">03</div><h4 data-editable="true">场景定制能力</h4><p data-editable="true">围绕客户实际业务场景做定制化表达与方案设计，是最终赢得客户认可的重要原因。</p></div>
+        </div>
+        <h3 data-editable="true">三、案例意义与可复制打法</h3>
+        <div class="two-col">
+          <div class="stack-card">
+            <h3 data-editable="true">案例意义</h3>
+            <p data-editable="true">老铺黄金项目说明，网易当前方案在奢侈品行业已经具备较强竞争力，也验证了我方在该行业持续突破的可行性。</p>
+          </div>
+          <div class="stack-card">
+            <h3 data-editable="true">可复制打法</h3>
+            <ul>
+              <li data-editable="true">高层关系切入，提前进入关键决策链；</li>
+              <li data-editable="true">在客户立项和需求形成阶段更早介入；</li>
+              <li data-editable="true">结合业务场景做定制化表达与案例背书联动。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p7">
+        <div class="page-number">P.07</div>
+        <div class="kicker" data-editable="true">Sales Enablement</div>
+        <h2 class="title" data-editable="true">工具赋能：让销售准备、推进与协同更高效</h2>
+        <p class="topic" data-editable="true">这一页不强调“我会不会 AI”，而是重点说明：工具如何帮助我和同事更快做判断、推进项目、沉淀信息，并提升售前协同效率。</p>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <div class="head"><strong data-editable="true">工具一：KA 下一步要做什么？</strong><span data-editable="true">场景：推进判断 / 回复组织 / 下一步动作</span></div>
+            <img src="assets/工具一.png" alt="工具一截图" />
+            <div class="quote"><ul>
+              <li data-editable="true">项目推进卡住，不知道下一步怎么走时</li>
+              <li data-editable="true">收到 RFP，需要快速判断推进动作时</li>
+              <li data-editable="true">客户临时发来消息，需要尽快组织回复时</li>
+              <li data-editable="true">IT 阻断业务沟通，需要先整理思路时</li>
+            </ul></div>
+          </div>
+          <div class="tool-card">
+            <div class="head"><strong data-editable="true">工具二：理解客户，判断怎么卖</strong><span data-editable="true">场景：新客研究 / 商业模式理解 / 销售话术判断</span></div>
+            <img src="assets/工具二.png" alt="工具二截图" />
+            <div class="quote"><ul>
+              <li data-editable="true">接手新客户，需要快速了解客户背景时</li>
+              <li data-editable="true">看年报、看业务模式，但信息太杂时</li>
+              <li data-editable="true">想判断客户现在最关心什么问题时</li>
+              <li data-editable="true">需要准备销售切入点和沟通话术时</li>
+            </ul></div>
+          </div>
+          <div class="tool-card">
+            <div class="head"><strong data-editable="true">工具三：先形成方案雏形，再高效协同售前</strong><span data-editable="true">场景：方案预整理 / NotebookLM / 历史案例检索</span></div>
+            <img src="assets/工具三.png" alt="工具三截图" />
+            <div class="quote"><ul>
+              <li data-editable="true">正式找售前前，需要先整理客户背景时</li>
+              <li data-editable="true">需求较散，需要先形成方案雏形时</li>
+              <li data-editable="true">想先查历史案例和相似项目时</li>
+              <li data-editable="true">希望减少和售前反复沟通成本时</li>
+            </ul></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p8">
+        <div class="page-number">P.08</div>
+        <div class="kicker" data-editable="true">Q1 Key Takeaways</div>
+        <h2 class="title" data-editable="true">Q1 核心结论</h2>
+        <p class="topic" data-editable="true">这一页聚焦 Q1 的关键发力点，不拆成长文，而是用更适合汇报展示的方式，概括阶段成果、判断和下一步动作。</p>
+        <div class="summary-ribbon">
+          <span data-editable="true">H1 储备完成率达 70%+</span>
+          <span data-editable="true">奢侈品行业实现关键突破</span>
+          <span data-editable="true">工具开始赋能销售动作</span>
+          <span data-editable="true">大型项目竞争要求提前显现</span>
+        </div>
+        <div class="logic-grid">
+          <div class="logic-card">
+            <div class="tag" data-editable="true">01</div>
+            <h4 data-editable="true">为 H1 结果兑现做储备</h4>
+            <p data-editable="true">H1 储备完成率已达 70%+；下一步重点转向回款前置，而不是继续堆储备。</p>
+          </div>
+          <div class="logic-card">
+            <div class="tag" data-editable="true">02</div>
+            <h4 data-editable="true">奢侈品行业实现突破</h4>
+            <p data-editable="true">拿下老铺黄金新签客户，并获得巴宝莉付费 POC 机会，为后续行业突破打开了口子。</p>
+          </div>
+          <div class="logic-card">
+            <div class="tag" data-editable="true">03</div>
+            <h4 data-editable="true">工具开始赋能销售动作</h4>
+            <p data-editable="true">工具已开始用于客户研究、销售准备、项目推进和复盘沉淀，帮助提升日常销售效率。</p>
+          </div>
+          <div class="logic-card">
+            <div class="tag" data-editable="true">04</div>
+            <h4 data-editable="true">提前应对大型项目竞争</h4>
+            <p data-editable="true">客户对 Agent 平台能力要求明显提升，也推动我更系统思考后续方案补强和大型项目 PK 胜率。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p9">
+        <div class="page-number">P.09</div>
+        <div class="chapter-slab">
+          <div>
+            <div class="kicker" data-editable="true">Part II</div>
+            <h3 data-editable="true">第二部分｜Q2 规划</h3>
+            <p data-editable="true">这一部分从 Q2 目标出发，判断 pipeline 的确定性，并进一步拆到重点项目和支撑方法。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p10">
+        <div class="page-number">P.10</div>
+        <div class="kicker" data-editable="true">Q2 Outlook</div>
+        <h2 class="title" data-editable="true">Q2 规划</h2>
+        <div class="dashboard">
+          <div class="panel">
+            <div class="panel-title" data-editable="true">目标锚点</div>
+            <div class="quote" data-editable="true">Q2 既要完成单季度重点项目兑现，也要尽量提前实现 H1 80%以上目标，并争取向上突破。</div>
+            <div class="summary-ribbon">
+              <span data-editable="true">Q2 铁冲总和：108+</span>
+              <span data-editable="true">H1 指标总和：166 万</span>
+              <span data-editable="true">Q1 回款 + Q2 铁冲：124 万</span>
+              <span data-editable="true">当前完成度：约 75%</span>
+              <span data-editable="true">80%目标线：132.8 万</span>
+              <span data-editable="true">距离80%仍需补足：约 8.8 万</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title" data-editable="true">核心判断</div>
+            <div class="quote" data-editable="true">Q2 的重点在于提升现有项目转化率、前置回款节奏；从 H1 看，则要尽快补齐约 8.8 万缺口，推动达成 80%以上并争取继续突破。</div>
+            <ul>
+              <li data-editable="true">Q2 单季度关键在于重点项目签约兑现；</li>
+              <li data-editable="true">Q2 回款节奏能否前置，将直接影响 H1 完成度；</li>
+              <li data-editable="true">在完成 80% 目标线基础上，仍应争取更高达成。</li>
+            </ul>
+          </div>
+        </div>
+        <h3 data-editable="true">经营逻辑</h3>
+        <div class="quote" data-editable="true">现有 pipeline 已具备一定基础，因此 Q2 的核心不是继续扩充储备，而是优先兑现高确定性项目，并尽快把 H1 推进到 80%以上。</div>
+        <h3 data-editable="true">Q2 工作重点</h3>
+        <div class="summary-ribbon">
+          <span data-editable="true">推动高确定性项目尽快签约</span>
+          <span data-editable="true">提前锁定重点项目回款节奏，尽量前置到 5 月</span>
+          <span data-editable="true">在达成 H1 80%以上基础上争取继续突破</span>
+        </div>
+        <p class="topic" data-editable="true">以下项目盘子主要用于支撑 Q2 兑现判断和 H1 完成度推进。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-editable="true">客户 / 项目</th>
+                <th data-editable="true">预估业绩</th>
+                <th data-editable="true">签约类型</th>
+                <th data-editable="true">判断</th>
+                <th data-editable="true">当前阶段</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td data-editable="true">爱马仕 + 客服私有化</td><td data-editable="true">40+</td><td><span class="badge badge-neutral" data-editable="true">新签</span></td><td><span class="badge badge-strong" data-editable="true">铁单</span></td><td><span class="badge badge-neutral" data-editable="true">交付阶段</span></td></tr>
+              <tr><td data-editable="true">某奢品增购</td><td data-editable="true">20+</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-strong" data-editable="true">铁单</span></td><td><span class="badge badge-neutral" data-editable="true">推进中</span></td></tr>
+              <tr><td data-editable="true">老铺黄金</td><td data-editable="true">30+</td><td><span class="badge badge-neutral" data-editable="true">新签</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-warn" data-editable="true">重点推进</span></td></tr>
+              <tr><td data-editable="true">捷成 ITSSC</td><td data-editable="true">10+</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-neutral" data-editable="true">推进中</span></td></tr>
+              <tr><td data-editable="true">a2 Agent</td><td data-editable="true">8+</td><td><span class="badge badge-neutral" data-editable="true">增购</span></td><td><span class="badge badge-warn" data-editable="true">冲单</span></td><td><span class="badge badge-warn" data-editable="true">延期风险</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="page" id="p11">
+        <div class="page-number">P.11</div>
+        <div class="kicker" data-editable="true">Key Accounts</div>
+        <h2 class="title" data-editable="true">Q2 大客户经营重点</h2>
+        <p class="topic" data-editable="true">除重点项目推进外，Q2 还需要持续投入在核心大客户经营上，一方面争取年内新增贡献，另一方面为下半年业绩提前做储备。</p>
+        <div class="quote" data-editable="true">这一页聚焦存量大客户经营，重点看新增机会、实施推进与回款节奏把控。</div>
+        <div class="matrix">
+          <div class="matrix-card">
+            <div class="head"><strong data-editable="true">爱马仕</strong><span class="state" data-editable="true">私有化实施 / 新增经营</span></div>
+            <ul>
+              <li data-editable="true">当前阶段：一期私有化项目已进入部署和实施阶段。</li>
+              <li data-editable="true">Q2 重点：在实施推进过程中，继续挖掘新增需求，并同步关注项目后续回款节奏。</li>
+              <li data-editable="true">经营目标：争取新增需求贡献业绩，同时提前做好商务和回款准备，确保项目年内顺利回款。</li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="head"><strong data-editable="true">老铺黄金</strong><span class="state" data-editable="true">一期实施 / 二期预热</span></div>
+            <ul>
+              <li data-editable="true">当前阶段：Q2 预计完成一期实施，同时已开始推进二期相关安排。</li>
+              <li data-editable="true">Q2 重点：在保障一期顺利交付的同时，提前推动二期机会落地。</li>
+              <li data-editable="true">经营目标：在 Q2 持续推动项目进展，并为 H2 形成新的业绩贡献做前置储备。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="p12">
+        <div class="page-number">P.12</div>
+        <div class="kicker" data-editable="true">Key Projects</div>
+        <h2 class="title" data-editable="true">重点项目拆解：为什么值得重点推进</h2>
+        <p class="topic" data-editable="true">结合 Q2 目标，当前重点推进项目主要集中在精准营销、Agent/SSC 和酒店行业三个方向。</p>
+        <div class="quote" data-editable="true">这一页聚焦新增与重点突破项目，重点看行业价值、当前意义和后续推进空间。</div>
+        <div class="summary-ribbon">
+          <span data-editable="true">ITSSC</span>
+          <span data-editable="true">精准营销</span>
+          <span data-editable="true">企业级 Openclaw 帝王蟹引流</span>
+        </div>
+        <div class="matrix">
+          <div class="matrix-card">
+            <div class="head"><strong data-editable="true">Burberry</strong><span class="state" data-editable="true">精准营销 / POC</span></div>
+            <ul>
+              <li data-editable="true">项目价值：这是精准营销在奢侈品行业里的验证机会，也是一个有代表性的 logo 客户。</li>
+              <li data-editable="true">当前意义：当前 POC 金额虽小，但具备后续放量空间。</li>
+              <li data-editable="true">后续价值：有助于验证精准营销在奢侈品行业中的推进路径，并为后续增量机会提供参考。</li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="head"><strong data-editable="true">捷成 ITSSC 项目</strong><span class="state" data-editable="true">Agent / SSC</span></div>
+            <ul>
+              <li data-editable="true">项目价值：这是企业内部 SSC 与 Agent 结合的重要场景机会。</li>
+              <li data-editable="true">当前意义：有利于后续拓展更多 SSC 类 SaaS + Agent 项目。</li>
+              <li data-editable="true">后续价值：项目体量和金额相对较高，值得持续推进。</li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="head"><strong data-editable="true">IHG 洲际酒店</strong><span class="state" data-editable="true">酒店行业 / 0-1</span></div>
+            <ul>
+              <li data-editable="true">项目价值：洲际酒店具备综合体客户特征，行业代表性较强，是酒店行业值得切入的方向。</li>
+              <li data-editable="true">当前意义：当前属于从 0 到 1 的选型机会，具备前置布局价值。</li>
+              <li data-editable="true">后续价值：智能客服系统是我方相对擅长的方向，有利于形成酒店行业突破。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <div class="footer-note" data-editable="true">按 E 切换编辑模式，点“导出当前 HTML”即可下载你当前修改后的页面版本。</div>
+    </main>
+  </div>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.querySelector('.edit-toggle');
+    const exportBtn = document.querySelector('.export-btn');
+    const banner = document.querySelector('.edit-banner');
+    const hotzone = document.querySelector('.hotzone');
+    const editableSelectors = '[data-editable="true"]';
+    let editMode = false;
+
+    function setEditMode(next) {
+      editMode = next;
+      body.classList.toggle('edit-mode', editMode);
+      document.querySelectorAll(editableSelectors).forEach(el => {
+        el.contentEditable = editMode ? 'true' : 'false';
+        el.spellcheck = false;
+      });
+      toggleBtn.textContent = `编辑模式：${editMode ? '开启' : '关闭'}`;
+      banner.textContent = editMode
+        ? '编辑模式已开启：按 E 切换，Ctrl+S 显示本地保存提示。'
+        : '编辑模式已关闭';
+      if (!editMode) {
+        setTimeout(() => {
+          if (!body.classList.contains('edit-mode')) banner.textContent = '编辑模式已开启：按 E 切换，Ctrl+S 显示本地保存提示。';
+        }, 1200);
+      }
+    }
+
+    function isTypingTarget(target) {
+      if (!target) return false;
+      const tag = (target.tagName || '').toLowerCase();
+      return target.isContentEditable || tag === 'input' || tag === 'textarea';
+    }
+
+    toggleBtn.addEventListener('click', () => setEditMode(!editMode));
+    hotzone.addEventListener('click', () => setEditMode(!editMode));
+
+    exportBtn.addEventListener('click', () => {
+      const clonedDoc = document.documentElement.cloneNode(true);
+      clonedDoc.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+      clonedDoc.querySelectorAll('.edit-banner').forEach(el => el.style.display = 'none');
+      clonedDoc.querySelectorAll('.hotzone, .edit-toggle, .export-btn').forEach(el => el.remove());
+      const html = '<!DOCTYPE html>\n' + clonedDoc.outerHTML;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '2026Q1总结_Q2规划_edited.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      banner.style.display = 'block';
+      banner.textContent = '已导出当前页面 HTML，可把下载后的文件发我，我帮你重新发布。';
+      setTimeout(() => {
+        banner.textContent = editMode
+          ? '编辑模式已开启：按 E 切换，Ctrl+S 显示本地保存提示。'
+          : '编辑模式已关闭';
+        if (!editMode) banner.style.display = 'none';
+      }, 2200);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !isTypingTarget(e.target)) {
+        e.preventDefault();
+        setEditMode(!editMode);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        banner.style.display = 'block';
+        banner.textContent = '已保存到当前浏览器本地编辑状态（提示用，不会自动回写文件）。';
+        setTimeout(() => {
+          banner.textContent = editMode
+            ? '编辑模式已开启：按 E 切换，Ctrl+S 显示本地保存提示。'
+            : '编辑模式已关闭';
+          if (!editMode) banner.style.display = 'none';
+        }, 1800);
+      }
+    });
+
+    const sections = [...document.querySelectorAll('.page')];
+    const navLinks = [...document.querySelectorAll('.nav a')];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { rootMargin: '-30% 0px -55% 0px', threshold: 0.01 });
+    sections.forEach(sec => observer.observe(sec));
+  </script>
+</body>
+</html>
