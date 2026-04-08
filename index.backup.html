@@ -12,10 +12,9 @@
       --text: #1d1d1f;
       --muted: #6e6e73;
       --line: #e5e5e7;
-      --accent: #C8161E;
-      --accent-soft: #FCEEEF;
-      --accent-dark: #8B0F15;
-      --accent-deep: #A01219;
+      --accent: #d51f26;
+      --accent-dark: #9f151b;
+      --accent-soft: #f8f4f4;
       --gold: #9f8357;
       --shadow: 0 18px 44px rgba(29, 29, 31, 0.06);
       --nav-w: 230px;
@@ -409,7 +408,7 @@
     }
 
     .ring-note {
-      margin: 90px 0 16px;
+      margin: 2px 0 16px;
       text-align: center;
       font-size: 11px;
       color: var(--muted);
@@ -804,324 +803,6 @@
       .edit-toggle { left: 18px; }
       .timeline-line { display: none; }
     }
-    .logic-card .solution{margin-top:10px;padding:10px 12px;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.6;color:#333;}
-    .logic-card .solution strong{color:var(--accent);}
-    .progress-wrap{margin-top:14px;}
-    .progress-wrap .pbar{height:14px;background:#f0f0f0;border-radius:8px;overflow:hidden;position:relative;}
-    .progress-wrap .pbar > span{display:block;height:100%;background:linear-gradient(90deg,#d51f26,#ff6b3d);border-radius:8px;}
-    .progress-wrap .plabel{display:flex;justify-content:space-between;font-size:12px;color:#666;margin-top:6px;}
-    .play-checklist{margin-top:14px;padding:14px 16px;background:#fafafa;border:1px dashed #d51f26;border-radius:8px;}
-    .play-checklist h4{margin:0 0 8px;color:var(--accent);font-size:15px;}
-    .play-checklist ol{margin:0;padding-left:20px;font-size:14px;line-height:1.8;color:#333;}
-    .badge-conf-h{background:#e8f5e9;color:#2e7d32;}
-    .badge-conf-m{background:#fff8e1;color:#ef6c00;}
-    .badge-conf-l{background:#ffebee;color:#c62828;}
-    .thanks-page{text-align:center;padding:60px 20px;}
-    .thanks-page h2{font-size:42px;margin-bottom:16px;}
-    .thanks-page p{font-size:16px;color:#666;}
-    .thanks-page .contact{margin-top:30px;display:inline-block;padding:16px 28px;border:1px solid #eee;border-radius:10px;background:#fafafa;}
-
-    /* ================= NetEase 风格 + 全屏演示模式覆盖样式 ================= */
-    html, body { height: 100%; }
-    body {
-      background: #ffffff !important;
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
-      scroll-behavior: smooth;
-    }
-    body::before { display: none; }
-
-    .shell {
-      padding: 0 !important;
-      gap: 0 !important;
-      grid-template-columns: var(--nav-w) 1fr !important;
-    }
-
-    .sidebar {
-      position: fixed !important;
-      top: 16px;
-      left: 16px;
-      width: calc(var(--nav-w) - 0px);
-      height: calc(100vh - 32px);
-      border-radius: 22px;
-      border: 1px solid var(--accent-soft);
-      background: #fff;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-      z-index: 50;
-    }
-    .brand .eyebrow { color: var(--accent); }
-    .nav a:hover, .nav a.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-color: var(--accent-soft);
-    }
-
-    .main {
-      margin-left: calc(var(--nav-w) + 32px);
-      width: calc(100vw - var(--nav-w) - 48px);
-    }
-
-    /* 隐藏冗余 hero 块 */
-    .hero { display: none !important; }
-
-    /* 每页吸附满屏 */
-    .page {
-      width: 100% !important;
-      max-width: none !important;
-      margin: 0 !important;
-      min-height: 100vh;
-      height: 100vh;
-      border-radius: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 48px 64px 56px !important;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      overflow: hidden;
-      position: relative;
-      background: #ffffff;
-    }
-
-    /* 内容自动缩放容器 */
-    .page-inner {
-      flex: 1;
-      transform-origin: top left;
-      width: 100%;
-    }
-
-    /* 标题左侧红竖条 */
-    .page > .title,
-    .page-inner > .title {
-      position: relative;
-      padding-left: 18px;
-      font-size: 30px !important;
-      font-weight: 900;
-      color: #1a1a1a;
-      text-align: left;
-    }
-    .page > .title::before,
-    .page-inner > .title::before {
-      content: "";
-      position: absolute;
-      left: 0; top: 8px; bottom: 8px;
-      width: 6px;
-      background: var(--accent);
-      border-radius: 3px;
-    }
-
-    .kicker { color: var(--accent); }
-    .topic { border-left-color: var(--accent); padding-left: 14px; }
-    h3 { color: var(--accent-deep); font-size: 17px; }
-
-    /* 调整 stat / panel / badge 等红色 */
-    .stat-card .num { color: var(--accent); }
-    .panel .panel-title { color: var(--accent-deep); }
-    .ring { background: conic-gradient(var(--accent) 0 70%, #f1e4e4 70% 100%); }
-    .ring-center .big { color: var(--accent); }
-    .progress-wrap .pbar > span { background: var(--accent) !important; }
-    .play-checklist { border-color: var(--accent); }
-    .play-checklist h4 { color: var(--accent); }
-    .logic-card .solution { background: var(--accent-soft); border-left-color: var(--accent); }
-    .logic-card .solution strong { color: var(--accent); }
-    .page-number {
-      background: var(--accent-soft);
-      border-color: var(--accent-soft);
-      color: var(--accent);
-    }
-    th { background: #FCEEEF; color: var(--accent-deep); }
-    tbody tr:hover { background: rgba(200,22,30,0.04); }
-
-    /* ============ 封面 P1：整页红底白字 ============ */
-    .page#p1 {
-      background: linear-gradient(135deg, #C8161E 0%, #8B0F15 100%) !important;
-      color: #ffffff;
-      padding: 80px 80px 80px !important;
-      justify-content: center;
-    }
-    .page#p1::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.10), transparent 50%),
-                  radial-gradient(circle at 20% 80%, rgba(255,255,255,0.06), transparent 50%);
-      pointer-events: none;
-    }
-    .page#p1 .page-number {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.25);
-      color: #fff;
-    }
-    .page#p1 .kicker { color: rgba(255,255,255,0.85); }
-    .page#p1 .title {
-      color: #fff !important;
-      font-size: 60px !important;
-      padding-left: 0 !important;
-      max-width: 14ch;
-      line-height: 1.1;
-      margin-top: 20px;
-    }
-    .page#p1 .title::before { display: none; }
-    .page#p1 .topic { color: rgba(255,255,255,0.85); border-left-color: rgba(255,255,255,0.5); max-width: 50ch; }
-    .page#p1 .quote {
-      background: transparent;
-      border-left: 3px solid rgba(255,255,255,0.5);
-      color: #fff;
-      margin-top: 30px;
-    }
-
-    /* ============ 章节扉页 P3 / P9：红方块数字 + 深红粗体 ============ */
-    .page#p3, .page#p9 {
-      justify-content: center;
-      align-items: center;
-    }
-    .page#p3 .page-inner,
-    .page#p9 .page-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 70vh;
-    }
-    .page#p3 .chapter-slab,
-    .page#p9 .chapter-slab {
-      display: flex;
-      align-items: center;
-      gap: 48px;
-      background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-      margin: 0 auto;
-    }
-    .page#p3 .chapter-slab::before,
-    .page#p9 .chapter-slab::before {
-      content: "1";
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 180px;
-      height: 180px;
-      background: var(--accent);
-      color: #fff;
-      font-size: 110px;
-      font-weight: 900;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-    .page#p9 .chapter-slab::before { content: "2"; }
-    .page#p3 .chapter-slab .kicker,
-    .page#p9 .chapter-slab .kicker { display: none; }
-    .page#p3 .chapter-slab h3,
-    .page#p9 .chapter-slab h3 {
-      font-size: 76px !important;
-      color: var(--accent-deep) !important;
-      font-weight: 900;
-      margin: 0 !important;
-      line-height: 1.1;
-    }
-    .page#p3 .chapter-slab p,
-    .page#p9 .chapter-slab p {
-      font-size: 20px;
-      color: #666;
-      max-width: 50ch;
-      margin-top: 16px;
-      line-height: 1.7;
-    }
-
-    /* P11 大客户经营：内容居中 + 卡片放大 */
-    .page#p11 { justify-content: center; }
-    .page#p11 .matrix {
-      max-width: 1100px;
-      margin: 30px auto 0;
-      gap: 32px;
-    }
-    .page#p11 .matrix-card {
-      padding: 32px 36px !important;
-    }
-    .page#p11 .matrix-card .head strong { font-size: 22px; }
-    .page#p11 .matrix-card li { font-size: 16px; line-height: 1.9; }
-    .page#p11 > .page-inner > .title,
-    .page#p11 .title { text-align: center; padding-left: 0 !important; font-size: 36px !important; }
-    .page#p11 .title::before { display: none; }
-    .page#p11 > .page-inner > .topic,
-    .page#p11 .topic { text-align: center; border-left: none !important; padding-left: 0 !important; max-width: none; margin-left: auto; margin-right: auto; font-size: 16px; }
-    .page#p11 > .page-inner > .quote,
-    .page#p11 .quote { max-width: 800px; margin-left: auto; margin-right: auto; text-align: center; font-size: 16px; }
-
-    /* 全局放大字号，避免缩放后看不清 */
-    p, li, td, th, span, div { font-size: 18px; }
-    .page > .title, .page-inner > .title { font-size: 38px !important; }
-    .topic { font-size: 19px !important; line-height: 1.8; }
-    .kicker { font-size: 14px; }
-    h3 { font-size: 22px !important; }
-    h4 { font-size: 19px !important; }
-    .stat-card .num { font-size: 44px; }
-    .stat-card .label { font-size: 15px; }
-    .stat-card .sub { font-size: 16px; }
-    .ring-note { font-size: 18px !important; color: #555 !important; line-height: 1.7; }
-    .mini-box span { font-size: 16px; }
-    .mini-box strong { font-size: 26px; }
-    .progress-wrap .plabel { font-size: 16px !important; color: #444 !important; }
-    .progress-wrap .pbar { height: 18px; }
-    th { font-size: 16px !important; }
-    td { font-size: 17px !important; padding: 18px 20px; }
-    .panel { padding: 24px 28px; }
-    .panel .panel-title { font-size: 24px; }
-    .panel .quote, .panel p, .panel li { font-size: 18px !important; line-height: 1.85; }
-    .summary-ribbon span { font-size: 18px; padding: 9px 15px; }
-    .quote { font-size: 18px; padding: 18px 22px; }
-    .quote li, .quote p { font-size: 18px !important; }
-    .badge { font-size: 16px !important; padding: 7px 13px !important; }
-    .logic-card h4 { font-size: 19px; }
-    .logic-card p { font-size: 16px !important; line-height: 1.75; }
-    .logic-card .solution { font-size: 16px !important; padding: 12px 14px; }
-    .play-checklist h4 { font-size: 19px; }
-    .play-checklist ol li { font-size: 17px !important; line-height: 1.9; }
-    .tool-card .head strong { font-size: 19px; }
-    .tool-card .head span { font-size: 14px; }
-    .tool-card li { font-size: 16px !important; }
-    .matrix-card .head strong { font-size: 20px; }
-    .matrix-card li { font-size: 17px !important; line-height: 1.85; }
-    .timeline-card .date { font-size: 15px; font-weight: 800; }
-    .timeline-card p { font-size: 15px !important; }
-    .stack-card h3 { font-size: 20px !important; }
-    .stack-card p, .stack-card li { font-size: 17px !important; }
-    .nav a { font-size: 14px; }
-    .brand h1 { font-size: 21px; }
-    .brand p { font-size: 14px; }
-    .page-number { font-size: 14px; padding: 8px 14px; }
-
-    /* 网易水印 */
-    .page::after {
-      content: "网易 NetEase";
-      position: absolute;
-      right: 28px;
-      bottom: 16px;
-      font-size: 11px;
-      color: rgba(200,22,30,0.55);
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      pointer-events: none;
-    }
-    .page#p1::after { color: rgba(255,255,255,0.7); }
-
-    /* 保持全屏演示时的可读性，避免后续规则把字号压回去 */
-    p, li, td, th, span { font-size: 18px; }
-    .stat-card { padding: 18px; }
-    .stat-card .num { font-size: 40px; }
-    .stat-card .label { font-size: 13px; }
-
-    /* 隐藏移动版滚动条美化 */
-    body::-webkit-scrollbar { width: 8px; }
-    body::-webkit-scrollbar-thumb { background: rgba(200,22,30,0.25); border-radius: 4px; }
-
-    @media (max-width: 1200px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; width: 100vw; }
-      .page { padding: 40px 36px !important; }
-    }
   </style>
 </head>
 <body>
@@ -1227,10 +908,6 @@
               <div class="mini-box"><span data-editable="true">H1 指标总和</span><strong data-editable="true">166 万</strong></div>
               <div class="mini-box"><span data-editable="true">Q1 回款 + Q2 铁冲</span><strong data-editable="true">124 万</strong></div>
             </div>
-            <div class="progress-wrap">
-              <div class="pbar"><span style="width:74.7%"></span></div>
-              <div class="plabel"><span data-editable="true">当前完成 124 / 166 万</span><span data-editable="true">距 80% 目标缺口 ≈ 8.8 万</span></div>
-            </div>
           </div>
         </div>
         <h3 data-editable="true">重点项目储备与推进状态</h3>
@@ -1262,10 +939,10 @@
         <h2 class="title" data-editable="true">Q1 暴露出的关键问题</h2>
         <p class="topic" data-editable="true">这一页聚焦 Q1 在经营判断和项目推进中暴露出的几个问题，作为后续需要重点补强的方向。</p>
         <div class="logic-grid">
-          <div class="logic-card"><div class="tag" data-editable="true">01</div><h4 data-editable="true">部分项目付款节奏判断偏乐观</h4><p data-editable="true">以爱马仕为代表，客户内部架构审核和私有化相关流程拉长了付款周期，部分原计划在 Q1 回款的金额延后到了 Q2。</p><p class="solution" data-editable="true"><strong>👉 解法：</strong>学习其他 KA 私有化回款管控经验，做好回款 by 周的预测，提前设计商务动作、把验收时间往前推。</p></div>
-          <div class="logic-card"><div class="tag" data-editable="true">02</div><h4 data-editable="true">私有化项目推进复杂度更高</h4><p data-editable="true">私有化项目不仅交付周期更长，信息安全审核、流程审批和收款推进的复杂度也明显更高。</p><p class="solution" data-editable="true"><strong>👉 解法：</strong>提前判断私有化项目的验收复杂度，每周与网易内部交付团队沟通预示风险，及时调整回款预期。</p></div>
-          <div class="logic-card"><div class="tag" data-editable="true">03</div><h4 data-editable="true">重点机会前置储备仍需加强</h4><p data-editable="true">Q1 部分重点商机进入时点偏后，例如鄂尔多斯等；后续需要更多在客户立项和需求形成阶段更早介入，积累可复制机会。</p><p class="solution" data-editable="true"><strong>👉 解法：</strong>深度运营现有伙伴和甲方，邀约甲方参与网易今年举办的各种展会和 workshop（例如 4 月 17 日上海"帝王蟹"活动），把关系前置成机会。</p></div>
-          <div class="logic-card"><div class="tag" data-editable="true">04</div><h4 data-editable="true">Agent 类项目打法储备仍需加强</h4><p data-editable="true">目前很多项目仍以在线呼叫、Agent 智能辅助为主；后续更值得投入的是 ToC 大模型 Agent 和企业内部 Agent 相关方案与打法。</p><p class="solution" data-editable="true"><strong>👉 解法：</strong>持续关注阿里、火山、腾讯的 Agent 打法，多收集情报，跟售前团队和伙伴紧密协同，建立"防守式"方案预案。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">01</div><h4 data-editable="true">部分项目付款节奏判断偏乐观</h4><p data-editable="true">以爱马仕为代表，客户内部架构审核和私有化相关流程拉长了付款周期，部分原计划在 Q1 回款的金额延后到了 Q2。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">02</div><h4 data-editable="true">私有化项目推进复杂度更高</h4><p data-editable="true">私有化项目不仅交付周期更长，信息安全审核、流程审批和收款推进的复杂度也明显更高。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">03</div><h4 data-editable="true">重点机会前置储备仍需加强</h4><p data-editable="true">Q1 部分重点商机进入时点偏后，例如鄂尔多斯等；后续需要更多在客户立项和需求形成阶段更早介入，积累可复制机会。</p></div>
+          <div class="logic-card"><div class="tag" data-editable="true">04</div><h4 data-editable="true">Agent 类项目打法储备仍需加强</h4><p data-editable="true">目前很多项目仍以在线呼叫、Agent 智能辅助为主；后续更值得投入的是 ToC 大模型 Agent 和企业内部 Agent 相关方案与打法。</p></div>
         </div>
       </section>
 
@@ -1307,15 +984,6 @@
             </ul>
           </div>
         </div>
-        <div class="play-checklist">
-          <h4 data-editable="true">✅ 老铺打法 · 4 个关键动作（可复用 Checklist）</h4>
-          <ol>
-            <li data-editable="true"><strong>动作 1 · 伙伴关系前置：</strong>前期与伙伴保持紧密协同，让伙伴帮我们更早进入客户视野与决策链，把"陌拜成本"降到最低。</li>
-            <li data-editable="true"><strong>动作 2 · 方案做深一步：</strong>不停留在通用版方案，而是围绕客户真实场景（总部-门店协同、工单、400 等）多做一层定制，让客户"看到自己"。</li>
-            <li data-editable="true"><strong>动作 3 · 用奢侈品标杆案例做背书：</strong>充分调用我方在奢侈品行业的标杆客户案例做横向背书，快速建立"同行选我们"的信任感。</li>
-            <li data-editable="true"><strong>动作 4 · 5 年折扣阶梯方案：</strong>用 5 年期折扣阶梯把短期价格压力转化为长期绑定，既给客户算长账，又锁定后续二期/三期机会。</li>
-          </ol>
-        </div>
       </section>
 
       <section class="page" id="p7">
@@ -1332,10 +1000,7 @@
               <li data-editable="true">收到 RFP，需要快速判断推进动作时</li>
               <li data-editable="true">客户临时发来消息，需要尽快组织回复时</li>
               <li data-editable="true">IT 阻断业务沟通，需要先整理思路时</li>
-            </ul>
-            <p style="margin:8px 0 4px;font-size:13px;color:#d51f26;"><strong>⏱ 节省时间：</strong>原来 1 小时整理推进思路 → 10 分钟出方向</p>
-            <p style="margin:0;font-size:13px;color:#555;"><strong>💡 Prompt 参考：</strong>"我是网易销售，正在跟进 [客户]，目前进展是 [xx]，客户最新反馈是 [xx]，请帮我列出 3 个最可能的推进动作，并按优先级排序。"</p>
-            </div>
+            </ul></div>
           </div>
           <div class="tool-card">
             <div class="head"><strong data-editable="true">工具二：理解客户，判断怎么卖</strong><span data-editable="true">场景：新客研究 / 商业模式理解 / 销售话术判断</span></div>
@@ -1345,10 +1010,7 @@
               <li data-editable="true">看年报、看业务模式，但信息太杂时</li>
               <li data-editable="true">想判断客户现在最关心什么问题时</li>
               <li data-editable="true">需要准备销售切入点和沟通话术时</li>
-            </ul>
-            <p style="margin:8px 0 4px;font-size:13px;color:#d51f26;"><strong>⏱ 节省时间：</strong>新客调研从半天 → 30 分钟拿到结构化洞察</p>
-            <p style="margin:0;font-size:13px;color:#555;"><strong>💡 Prompt 参考：</strong>"请从财报、新闻和官网角度，分析 [客户] 的主营业务、近 1 年战略重点和客服/营销相关痛点，并给出 3 个销售切入点。"</p>
-            </div>
+            </ul></div>
           </div>
           <div class="tool-card">
             <div class="head"><strong data-editable="true">工具三：先形成方案雏形，再高效协同售前</strong><span data-editable="true">场景：方案预整理 / NotebookLM / 历史案例检索</span></div>
@@ -1358,10 +1020,7 @@
               <li data-editable="true">需求较散，需要先形成方案雏形时</li>
               <li data-editable="true">想先查历史案例和相似项目时</li>
               <li data-editable="true">希望减少和售前反复沟通成本时</li>
-            </ul>
-            <p style="margin:8px 0 4px;font-size:13px;color:#d51f26;"><strong>⏱ 节省时间：</strong>方案雏形 + 历史案例检索从 2 天 → 半天</p>
-            <p style="margin:0;font-size:13px;color:#555;"><strong>💡 Prompt 参考：</strong>"基于以下客户需求 [xx] 和我们的历史案例库 [上传 NotebookLM]，帮我列出最相似的 3 个案例，并草拟一份方案大纲（场景-能力-价值-报价框架）。"</p>
-            </div>
+            </ul></div>
           </div>
         </div>
       </section>
@@ -1637,82 +1296,6 @@
       });
     }, { rootMargin: '-30% 0px -55% 0px', threshold: 0.01 });
     sections.forEach(sec => observer.observe(sec));
-
-    /* ===== 全屏演示模式：内容自动缩放 + 键盘翻页 ===== */
-    function wrapPageInner(){
-      document.querySelectorAll('.page').forEach(page => {
-        if (page.querySelector(':scope > .page-inner')) return;
-        const inner = document.createElement('div');
-        inner.className = 'page-inner';
-        // 把除 page-number 之外的子节点全部移进 inner
-        const kids = Array.from(page.childNodes).filter(n => {
-          return !(n.nodeType === 1 && n.classList && n.classList.contains('page-number'));
-        });
-        kids.forEach(k => inner.appendChild(k));
-        page.appendChild(inner);
-      });
-    }
-
-    function fitPages(){
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(page => {
-        const inner = page.querySelector(':scope > .page-inner');
-        if (!inner) return;
-        // 重置
-        inner.style.transform = '';
-        inner.style.width = '100%';
-        const cs = getComputedStyle(page);
-        const padTop = parseFloat(cs.paddingTop);
-        const padBottom = parseFloat(cs.paddingBottom);
-        const padLeft = parseFloat(cs.paddingLeft);
-        const padRight = parseFloat(cs.paddingRight);
-        const availH = page.clientHeight - padTop - padBottom;
-        const availW = page.clientWidth - padLeft - padRight;
-        const contentH = inner.scrollHeight;
-        const contentW = inner.scrollWidth;
-        const ratio = Math.min(1, availH / contentH, availW / contentW);
-        if (ratio < 1) {
-          inner.style.transformOrigin = 'top left';
-          inner.style.transform = 'scale(' + ratio.toFixed(4) + ')';
-          inner.style.width = (100 / ratio) + '%';
-        }
-      });
-    }
-
-    function scrollToPage(idx){
-      const pages = document.querySelectorAll('.page');
-      if (idx < 0 || idx >= pages.length) return;
-      pages[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function currentPageIndex(){
-      const pages = [...document.querySelectorAll('.page')];
-      const sy = window.scrollY + window.innerHeight / 2;
-      let best = 0, bestDist = Infinity;
-      pages.forEach((p, i) => {
-        const top = p.offsetTop;
-        const d = Math.abs(top + p.offsetHeight/2 - sy);
-        if (d < bestDist) { bestDist = d; best = i; }
-      });
-      return best;
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (isTypingTarget(e.target)) return;
-      const next = ['ArrowDown','PageDown',' ','j','J'];
-      const prev = ['ArrowUp','PageUp','k','K'];
-      if (next.includes(e.key)) { e.preventDefault(); scrollToPage(currentPageIndex() + 1); }
-      if (prev.includes(e.key)) { e.preventDefault(); scrollToPage(currentPageIndex() - 1); }
-      if (e.key === 'Home') { e.preventDefault(); scrollToPage(0); }
-      if (e.key === 'End')  { e.preventDefault(); scrollToPage(document.querySelectorAll('.page').length - 1); }
-    });
-
-    window.addEventListener('load', () => {
-      wrapPageInner();
-      fitPages();
-      setTimeout(fitPages, 300);
-    });
-    window.addEventListener('resize', () => { fitPages(); });
   </script>
 </body>
 </html>
